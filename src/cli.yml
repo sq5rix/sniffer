@@ -1,0 +1,16 @@
+name: sniffer
+version: "0.1"
+author: Tom Wawer <sq5rix@gmail.com>
+about: port sniffer
+args:
+    -   URL:
+            help: Must be URL
+            required: true
+            index: 1
+    -   threads:
+            short: t
+            multiple: false
+            help: "syntax: sniffer URL {threads}"
+            takes_value: true
+
+
