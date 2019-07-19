@@ -5,17 +5,6 @@ use std::net::IpAddr;
 extern crate clap;
 use clap::{App, Arg};
 
-// struct Arguments {
-//     flag: String,
-//     ipaddr: IpAddr,
-//     threads: u16,
-// }
-
-// impl Arguments{
-//     fn new(args: &[String]) -> Result<Arguments, &'static str>{
-//     }
-// }
-
 fn main() {
     let matches = App::new("sniffer")
         .author("author: tom")
@@ -37,6 +26,7 @@ fn main() {
                 .help("IP addr to sniff"),
         )
         .get_matches();
+
     let ipaddr = value_t!(matches, "ipaddr", IpAddr).expect("Provide IPv4 or IPv6 address ");
     let threads = value_t!(matches, "threads", u16).expect("Provide number of threads");
 
