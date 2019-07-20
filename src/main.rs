@@ -11,37 +11,9 @@ use clap::{App, Arg};
 const MAX: u16 = 65535;
 
 fn main() {
-    let matches = App::new("sniffer")
-        .author("author: tom")
-        .about("sniffer snifs ports of an URL address")
-        .after_help("Use with care...")
-        .version("v0.1")
-        .arg(
-            Arg::with_name("verbose")
-                .required(false)
-                .help("verbose ports")
-                .short("v"),
-        )
-        .arg(
-            Arg::with_name("jobs")
-                .default_value("4")
-                .number_of_values(1)
-                .takes_value(true)
-                .help("number of threads/jobs")
-                .short("j"),
-        )
-        .arg(
-            Arg::with_name("ipaddr")
-                // .multiple(true)
-                .required(true)
-                .help("IP addr to sniff"),
-        )
-        .get_matches();
 
-    let addr = value_t!(matches, "ipaddr", IpAddr).expect("Provide IPv4 or IPv6 address ");
-    let num_threads = value_t!(matches, "jobs", u16).expect("Provide number of threads");
-    let is_verbose = matches.is_present("verbose");
-    ();
+
+    let (addr, num_threads, is_verbose) = get_params();
 
     println!("Number of jobs: {}", num_threads);
     println!("IP address: {}", addr);
@@ -94,4 +66,40 @@ fn scan(tx: Sender<u16>, start_port: u16, addr: IpAddr, num_threads: u16, is_ver
         }
         port += num_threads;
     }
+}
+
+fn get_params() -> (IpAddr, u16, bool){
+
+    let matches = App::new("sniffer")
+        .author("author: tom")
+        .about("sniffer snifs ports of an URL address")
+        .after_help("Use with care...")
+        .version("v0.1")
+        .arg(
+            Arg::with_name("verbose")
+                .required(false)
+                .help("verbose ports")
+                .short("v"),
+        )
+        .arg(
+            Arg::with_name("jobs")
+                .default_value("4")
+                .number_of_values(1)
+                .takes_value(true)
+                .help("number of threads/jobs")
+                .short("j"),
+        )
+        .arg(
+            Arg::with_name("ipaddr")
+                // .multiple(true)
+                .required(true)
+                .help("IP addr to sniff"),
+        )
+        .get_matches();
+
+    let addr = value_t!(matches, "ipaddr", IpAddr).expect("Provide IPv4 or IPv6 address ");
+    let num_threads = value_t!(matches, "jobs", u16).expect("Provide number of threads");
+    let is_verbose = matches.is_present("verbose");
+
+    (addr, num_threads, is_verbose)
 }
